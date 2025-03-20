@@ -1,0 +1,132 @@
+/* Base styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #EAEDED;
+}
+
+/* Header */
+header {
+  background-color: #131921;
+  color: white;
+}
+.header-top {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+.logo img {
+  height: 40px;
+}
+.search-bar {
+  flex-grow: 1;
+  margin: 0 20px;
+  display: flex;
+}
+.search-bar input {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+}
+.search-bar button {
+  padding: 8px;
+  background-color: #febd69;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.header-right a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #232f3e;
+}
+.navbar ul {
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+}
+.navbar li {
+  margin-right: 20px;
+}
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+/* Product grid */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+.product {
+  background-color: white;
+  width: 220px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  transition: transform 0.2s;
+}
+.product:hover {
+  transform: scale(1.03);
+}
+.product img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+}
+.product h3 {
+  font-size: 16px;
+  margin: 10px 0;
+  height: 40px;
+  overflow: hidden;
+}
+.rating {
+  color: #FFA41C;
+  font-size: 14px;
+}
+.price {
+  color: #B12704;
+  font-size: 18px;
+  margin: 5px 0;
+}
+.actual-price {
+  text-decoration: line-through;
+  color: #767676;
+  font-size: 14px;
+}
+
+/* Pagination */
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+.pagination button {
+  padding: 8px 12px;
+  margin: 0 5px;
+  border: none;
+  background-color: #232f3e;
+  color: white;
+  cursor: pointer;
+}
+.pagination button.active {
+  background-color: #febd69;
+}
+
+/* Footer */
+footer {
+  background-color: #131921;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+}

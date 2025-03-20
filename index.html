@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amazon-like Store</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-top">
+      <div class="logo">
+        <!-- Using Amazon logo as a placeholder -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" alt="Logo" />
+      </div>
+      <div class="search-bar">
+        <input type="text" id="search" placeholder="Search products..." />
+        <button id="searchBtn">Search</button>
+      </div>
+      <div class="header-right">
+        <a href="#" class="cart-link">Cart</a>
+      </div>
+    </div>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#">All</a></li>
+        <li><a href="#">Electronics</a></li>
+        <li><a href="#">Fashion</a></li>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Books</a></li>
+        <li><a href="#">Toys</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <div id="products" class="product-grid"></div>
+    <div id="pagination" class="pagination"></div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Amazon-like Store</p>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
