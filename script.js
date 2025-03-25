@@ -1,22 +1,15 @@
-
----
-
-### 2. Update Your Front-End Script (`script.js`)
-
-Below is your updated **script.js** that uses a relative URL for your proxy endpoint. (This assumes your front-end and backend are served from the same domain or proper CORS is configured if on different subdomains.)
-
-```javascript
 // script.js
 
 // Function to fetch products from the proxy endpoint
 function fetchProducts(query = 'drone', limit = 3, nextUrl = null) {
-  // Use the proxy endpoint hosted on your Render backend
-  // If your proxy and static site share the same domain, you can use a relative URL:
-  const apiUrl = nextUrl || `/api/ebay-search?q=${encodeURIComponent(query)}&limit=${limit}`;
+  // Replace with your actual backend proxy URL from Render:
+  const backendUrl = 'https://my-static-site-xog5.onrender.com';
+  // Build the full URL using the backend URL
+  const apiUrl = nextUrl || `${backendUrl}/api/ebay-search?q=${encodeURIComponent(query)}&limit=${limit}`;
 
   fetch(apiUrl, {
     method: 'GET'
-    // No need for Authorization header here because our backend adds it.
+    // No need for Authorization header here because our backend handles it.
   })
     .then(response => {
       if (!response.ok) {
