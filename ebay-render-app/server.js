@@ -11,10 +11,12 @@ const port = process.env.PORT || 3001;
 app.use(cors());
 
 // Proxy endpoint for eBay API
+
 app.get('/api/ebay-search', async (req, res) => {
   const query = req.query.q || 'drone';
   const limit = req.query.limit || 3;
   const ebayUrl = `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+  console.log("Fetching from eBay URL:", ebayUrl);
 
   try {
     const response = await axios.get(ebayUrl, {
@@ -23,13 +25,10 @@ app.get('/api/ebay-search', async (req, res) => {
         'Content-Type': 'application/json'
       }
     });
+    console.log("eBay API response received");
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching data from eBay:', error.message);
+    console.error('Error fetching data from eBay:', error.response ? error.response.data : error.message);
     res.status(error.response ? error.response.status : 500).json({ error: error.message });
   }
-});
-
-app.listen(port, () => {
-  console.log(`Proxy server is running on port ${port}`);
 });
