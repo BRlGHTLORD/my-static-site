@@ -1,24 +1,23 @@
-// Load environment variables from .env
+// server.js
 require('dotenv').config();
-
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 3001;  // Use a port different from your front end
+const port = process.env.PORT || 3001;
 
-// Use CORS middleware to allow your front end to access this server
+// Enable CORS so your front end can access this server
 app.use(cors());
 
-// Proxy endpoint for eBay API search
+// Proxy endpoint for eBay API
 app.get('/api/ebay-search', async (req, res) => {
   const query = req.query.q || 'drone';
   const limit = req.query.limit || 3;
-  const apiUrl = `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=${limit}`;
+  const ebayUrl = `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=${limit}`;
 
   try {
-    const response = await axios.get(apiUrl, {
+    const response = await axios.get(ebayUrl, {
       headers: {
         'Authorization': `Bearer ${process.env.EBAY_API_TOKEN}`,
         'Content-Type': 'application/json'
@@ -31,7 +30,6 @@ app.get('/api/ebay-search', async (req, res) => {
   }
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Proxy server is running on port ${port}`);
 });
