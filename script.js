@@ -1,80 +1,85 @@
-let productsData = [];
-let currentPage = 1;
-const itemsPerPage = 20;
-// Change the filename here for different websites (e.g., data1.json or data2.json)
-const jsonFile = "Toy.json";
+// Step 3: Fetch product data from the API endpoint with optional URL parameter
+function fetchProducts(query = 'drone', limit = 3, nextUrl = null) {
+  // If a nextUrl is provided, use that; otherwise, build the URL using the query and limit.
+  const apiUrl = nextUrl || `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(query)}&limit=${limit}`;
 
-document.addEventListener("DOMContentLoaded", () => {
-  fetch(jsonFile)
-    .then(response => response.json())
-    .then(data => {
-      productsData = data;
-      displayProducts();
-      setupPagination();
-    })
-    .catch(error => console.error("Error loading JSON:", error));
-    
-  document.getElementById("searchBtn").addEventListener("click", () => {
-    currentPage = 1;
-    displayProducts();
-    setupPagination();
-  });
-
-  document.getElementById("search").addEventListener("keypress", event => {
-    if (event.key === "Enter") {
-      currentPage = 1;
-      displayProducts();
-      setupPagination();
+  fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer YOUR_ACCESS_TOKEN', // Replace with your valid token or use backend proxy for security
+      'Content-Type': 'application/json'
     }
-  });
-});
-
-function displayProducts() {
-  const productsContainer = document.getElementById("products");
-  productsContainer.innerHTML = "";
-  
-  let filteredData = filterProducts(productsData);
-  let start = (currentPage - 1) * itemsPerPage;
-  let end = start + itemsPerPage;
-  let paginatedItems = filteredData.slice(start, end);
-  
-  paginatedItems.forEach(product => {
-    let productHTML = `
-      <div class="product">
-        <a href="${product.link}" target="_blank">
-          <img src="${product.image}" alt="${product.name}">
-        </a>
-        <h3>${product.name}</h3>
-        <p class="rating">⭐ ${product.ratings} (${product.no_of_ratings})</p>
-        <p class="price">₹${product.discount_price} <span class="actual-price">₹${product.actual_price}</span></p>
-      </div>
-    `;
-    productsContainer.innerHTML += productHTML;
-  });
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log('API Data:', data);
+      displayProducts(data, query, limit);
+    })
+    .catch(error => {
+      console.error('Error fetching products:', error);
+    });
 }
 
-function setupPagination() {
-  const paginationContainer = document.getElementById("pagination");
-  paginationContainer.innerHTML = "";
-  let filteredData = filterProducts(productsData);
-  let totalPages = Math.ceil(filteredData.length / itemsPerPage);
-  
-  for (let i = 1; i <= totalPages; i++) {
-    let btn = document.createElement("button");
-    btn.textContent = i;
-    if (i === currentPage) {
-      btn.classList.add("active");
-    }
-    btn.addEventListener("click", () => {
-      currentPage = i;
-      displayProducts();
-      setupPagination();
+// Step 3: Update displayProducts to handle pagination
+function displayProducts(data, query, limit) {
+  const productsDiv = document.getElementById('products');
+  productsDiv.innerHTML = ''; // Clear previous content
+
+  data.itemSummaries.forEach(item => {
+    // Create a container for each product
+    const itemDiv = document.createElement('div');
+    itemDiv.classList.add('item');
+
+    // Create product title element
+    const title = document.createElement('h3');
+    title.textContent = item.title;
+
+    // Create product image element
+    const img = document.createElement('img');
+    img.src = item.image.imageUrl;
+    img.alt = item.title;
+
+    // Create price element
+    const price = document.createElement('p');
+    price.textContent = `Price: ${item.price.value} ${item.price.currency}`;
+
+    // Append the elements to the item container
+    itemDiv.appendChild(img);
+    itemDiv.appendChild(title);
+    itemDiv.appendChild(price);
+
+    // Append the item container to the products div
+    productsDiv.appendChild(itemDiv);
+  });
+
+  // Handle pagination
+  const paginationDiv = document.getElementById('pagination');
+  paginationDiv.innerHTML = ''; // Clear previous pagination buttons
+
+  if (data.next) {
+    // Create a "Next" button
+    const nextButton = document.createElement('button');
+    nextButton.textContent = 'Next';
+    nextButton.addEventListener('click', () => {
+      // When clicked, fetch the next page using the next URL provided by eBay
+      fetchProducts(query, limit, data.next);
     });
-    paginationContainer.appendChild(btn);
+    paginationDiv.appendChild(nextButton);
   }
 }
 
-function filterProducts(data) {
-  let query = document.getElementById("search").value.toLowerCase();
-  return data.filter(product => product.name.toLowerCase().includes(query));
-}
+// Attach event listener to the search button
+document.getElementById('searchBtn').addEventListener('click', () => {
+  const searchInput = document.getElementById('search').value;
+  // When new search is initiated, clear pagination as well
+  document.getElementById('pagination').innerHTML = '';
+  fetchProducts(searchInput);
+});
+
+// On page load, fetch default products
+fetchProducts();
