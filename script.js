@@ -71,6 +71,7 @@ function displayProducts(data, query, limit) {
 // Attach event listener to the search button
 document.getElementById('searchBtn').addEventListener('click', () => {
   const searchInput = document.getElementById('search').value;
+  console.log("Search query:", searchInput); // Debug: log the search query
   document.getElementById('pagination').innerHTML = '';
   fetchProducts(searchInput);
 });
