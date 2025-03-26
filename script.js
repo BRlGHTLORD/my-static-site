@@ -3,7 +3,7 @@
 // Function to fetch products from the proxy endpoint
 function fetchProducts(query = 'drone', limit = 3, nextUrl = null) {
   // Replace with your actual backend proxy URL from Render:
-  const backendUrl = 'https://my-static-site-xog5.onrender.com';
+  const backendUrl = 'https://ebay-backend-5f1o.onrender.com';
   // Build the full URL using the backend URL
   const apiUrl = nextUrl || `${backendUrl}/api/ebay-search?q=${encodeURIComponent(query)}&limit=${limit}`;
 
